@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Through the Decades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#12233f; --navy-2:#1b3257; --teal:#1f8a8a; --teal-lt:#d6efee;
+    --gold:#e0a72e; --gold-lt:#fbf1d9; --ink:#1c2533; --muted:#5b6678;
+    --paper:#faf8f3; --card:#ffffff; --line:#e4e0d6;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.55}
+  h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.15;margin:0}
+  a{color:inherit}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+  /* Hero */
+  header.hero{background:var(--navy);color:#fff;padding:72px 0 56px;position:relative;overflow:hidden}
+  header.hero::after{content:"";position:absolute;inset:auto -10% -60px -10%;height:120px;background:var(--paper);transform:rotate(-2deg)}
+  .eyebrow{color:var(--gold);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem}
+  .hero h1{font-size:clamp(2.4rem,6vw,4.4rem);font-weight:800;margin:10px 0 16px}
+  .hero h1 span{color:var(--gold)}
+  .hero p{max-width:640px;font-size:1.1rem;color:#d7deea;margin:0}
+
+  /* Sticky decade nav */
+  nav.decades{position:sticky;top:0;z-index:10;background:rgba(250,248,243,.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+  nav.decades .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 20px;scrollbar-width:none}
+  nav.decades a{flex:none;text-decoration:none;font-weight:600;font-size:.9rem;padding:6px 12px;border-radius:999px;color:var(--navy);border:1px solid var(--line);background:#fff}
+  nav.decades a:hover,nav.decades a.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  section{padding:56px 0}
+  .section-title{font-size:clamp(1.7rem,3.5vw,2.4rem);color:var(--navy);margin-bottom:8px}
+  .lede{color:var(--muted);max-width:720px;margin:0 0 28px}
+
+  /* What is slang */
+  .intro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+  .intro-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;border-top:5px solid var(--teal)}
+  .intro-card:nth-child(2){border-top-color:var(--gold)}
+  .intro-card:nth-child(3){border-top-color:var(--navy)}
+  .intro-card h3{font-size:1.2rem;margin-bottom:8px;color:var(--navy)}
+  .intro-card p{margin:0;color:var(--muted)}
+
+  /* Controls */
+  .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:26px}
+  .search{flex:1 1 260px;padding:12px 16px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+  .search:focus{outline:2px solid var(--teal);border-color:var(--teal)}
+  .toggle{display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted);cursor:pointer;user-select:none}
+  .toggle input{accent-color:var(--teal);width:18px;height:18px}
+  .count{font-size:.9rem;color:var(--muted)}
+
+  /* Decades */
+  .decade{display:grid;grid-template-columns:200px 1fr;gap:28px;padding:34px 0;border-top:1px solid var(--line);scroll-margin-top:70px}
+  .decade-label{position:sticky;top:78px;align-self:start}
+  .decade-label .year{font-family:Fraunces,serif;font-weight:800;font-size:3.2rem;color:var(--navy);line-height:1}
+  .decade-label .nick{display:inline-block;margin-top:8px;background:var(--gold-lt);color:#8a5c00;font-weight:600;font-size:.8rem;padding:4px 10px;border-radius:999px}
+  .decade-body p.blurb{margin:0 0 18px;color:var(--muted);max-width:680px}
+  .terms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+  .term{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:transform .15s,box-shadow .15s}
+  .term:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(18,35,63,.08)}
+  .term b{display:block;font-size:1.05rem;color:var(--navy)}
+  .term span{font-size:.92rem;color:var(--muted)}
+  .term.repeat{border-color:var(--teal);background:var(--teal-lt)}
+  .term .tag{display:inline-block;margin-top:6px;font-size:.72rem;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.06em}
+  .decade.hidden,.term.hidden{display:none}
+  mark{background:var(--gold-lt);padding:0 2px;border-radius:3px}
+
+  /* Comebacks */
+  .comebacks{background:var(--navy);color:#fff}
+  .comebacks .section-title{color:#fff}
+  .comebacks .lede{color:#c9d3e3}
+  .cb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+  .cb{background:var(--navy-2);border-radius:12px;padding:16px 18px;border-left:4px solid var(--gold)}
+  .cb b{font-family:Fraunces,serif;font-size:1.25rem;display:block}
+  .cb span{color:var(--gold);font-weight:600;font-size:.9rem}
+
+  /* Game */
+  .game{background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px;max-width:760px;margin:0 auto;text-align:center}
+  .game .prompt{font-family:Fraunces,serif;font-size:clamp(2rem,5vw,3rem);color:var(--navy);margin:6px 0 4px}
+  .game .def{color:var(--muted);margin-bottom:22px;min-height:1.5em}
+  .choices{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .choices button{font:inherit;font-weight:600;padding:10px 18px;border-radius:10px;border:2px solid var(--line);background:#fff;color:var(--navy);cursor:pointer;min-width:90px}
+  .choices button:hover:not(:disabled){border-color:var(--teal)}
+  .choices button.right{background:var(--teal);border-color:var(--teal);color:#fff}
+  .choices button.wrong{background:#f7dede;border-color:#d98c8c;color:#8a2a2a}
+  .feedback{margin-top:18px;font-weight:600;min-height:1.5em}
+  .game-foot{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:12px;flex-wrap:wrap}
+  .score{color:var(--muted);font-size:.95rem}
+  .btn{font:inherit;font-weight:600;background:var(--gold);color:var(--navy);border:none;padding:10px 20px;border-radius:10px;cursor:pointer}
+  .btn:hover{filter:brightness(1.05)}
+
+  /* Discussion */
+  .qs{counter-reset:q;list-style:none;padding:0;margin:0;display:grid;gap:12px;max-width:820px}
+  .qs li{counter-increment:q;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px 16px 58px;position:relative}
+  .qs li::before{content:counter(q);position:absolute;left:16px;top:14px;width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.9rem}
+
+  footer{background:var(--navy);color:#9fb0c9;text-align:center;padding:26px 20px;font-size:.88rem}
+
+  @media (max-width:720px){
+    .decade{grid-template-columns:1fr;gap:12px}
+    .decade-label{position:static}
+    .decade-label .year{font-size:2.4rem}
+    .game{padding:22px 16px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">A century of American slang</div>
+    <h1>Language Through <span>the Decades</span></h1>
+    <p>From the bee's knees to no cap — explore how every generation invents its own words, and what those words reveal about the times that made them.</p>
+  </div>
+</header>
+
+<nav class="decades" aria-label="Jump to decade"><div class="wrap" id="nav"></div></nav>
+
+<main>
+  <section id="about">
+    <div class="wrap">
+      <h2 class="section-title">What is slang?</h2>
+      <p class="lede">Slang is informal, often playful language used within a group to add humor, emphasis, or a sense of belonging. It usually doesn't belong in formal writing — but it thrives in everyday conversation and online.</p>
+      <div class="intro-grid">
+        <div class="intro-card">
+          <h3>Where it comes from</h3>
+          <p>New slang grows out of real-life interactions and pop culture. Today it spreads fastest on social media platforms like TikTok.</p>
+        </div>
+        <div class="intro-card">
+          <h3>Who creates it</h3>
+          <p>Young people have always driven slang, using new words to set themselves apart from older generations. Subcultures and marginalized communities are major sources too — especially Black Americans through African American Vernacular English (AAVE), and LGBTQ communities through drag culture, media, and activism.</p>
+        </div>
+        <div class="intro-card">
+          <h3>Is slang "bad"?</h3>
+          <p>Older generations sometimes see slang as disrespectful, but it isn't inherently negative. It's all about context — knowing when a word fits and avoiding terms that are rude or hurtful.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="timeline" style="padding-top:20px">
+    <div class="wrap">
+      <h2 class="section-title">The timeline</h2>
+      <p class="lede">Search for a word, or scroll decade by decade. Words highlighted in teal show up in more than one decade.</p>
+      <div class="controls">
+        <input class="search" id="search" type="search" placeholder="Search a word or meaning… (try “cool” or “leave”)" aria-label="Search slang">
+        <label class="toggle"><input type="checkbox" id="classroom" checked> Classroom mode</label>
+        <span class="count" id="count"></span>
+      </div>
+      <div id="decades"></div>
+    </div>
+  </section>
+
+  <section class="comebacks" id="comebacks">
+    <div class="wrap">
+      <h2 class="section-title">Words that wouldn't quit</h2>
+      <p class="lede">Some slang outlives its decade. These words appear in more than one era — sometimes with a new meaning.</p>
+      <div class="cb-grid" id="cb"></div>
+    </div>
+  </section>
+
+  <section id="game">
+    <div class="wrap">
+      <h2 class="section-title" style="text-align:center">Guess the decade</h2>
+      <p class="lede" style="text-align:center;margin-left:auto;margin-right:auto">Which decade did this word come from?</p>
+      <div class="game">
+        <div class="eyebrow" style="color:var(--teal)">Mystery word</div>
+        <div class="prompt" id="g-word">—</div>
+        <div class="def" id="g-def"></div>
+        <div class="choices" id="g-choices"></div>
+        <div class="feedback" id="g-feedback"></div>
+        <div class="game-foot">
+          <span class="score" id="g-score">Score: 0 / 0</span>
+          <button class="btn" id="g-next">Next word →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="discuss" style="padding-top:10px">
+    <div class="wrap">
+      <h2 class="section-title">Think about it</h2>
+      <p class="lede">Use the timeline to explore these questions.</p>
+      <ol class="qs">
+        <li>Pick one decade. How do its slang words reflect the major events, music, or technology of that time?</li>
+        <li>Several decades have multiple words for "cool" or "excellent." Why might every generation need its own word for the same idea?</li>
+        <li>Many terms came from Black and LGBTQ communities before going mainstream. What happens to a word's meaning — and to credit for it — when it spreads beyond the group that created it?</li>
+        <li>Find a word that shows up in more than one decade. Why do you think it survived or came back?</li>
+        <li>Which 2020s words do you predict will still be used in 20 years? Which will sound as dated as "cat's meow"?</li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer>Language Through the Decades · A sociology exploration of how words reflect culture</footer>
+
+<script>
+const DATA = [
+  {y:"1920s", nick:"The Jazz Age", blurb:"The 1920s kick off our century of slang. These are some of the words and phrases people used in everyday conversation during the decade.", terms:[
+    ["Bee's knees","An outstanding person or thing"],["Blotto","Extremely drunk"],["Cat's meow","Something splendid or stylish"],["Dapper","Neat and stylish in dress and appearance"],["Doll","An attractive woman"],["Ducky","Charming or delightful"],["Gams","Legs, especially a woman's legs"],["Giggle water","Alcoholic beverage"],["Heebie-jeebies","The feeling of anxiety or fear"],["Hooch","Illicit liquor"],["Jake","Okay or fine"],["Keen","Attractive or appealing"],["Moll","A gangster's girlfriend"],["Petting party","A social gathering for kissing and light making out",1],["Scram","Leave immediately"],["Speakeasy","An illicit bar or nightclub selling alcohol during Prohibition"],["Whoopee","To have a good time or celebrate boisterously"]]},
+  {y:"1930s", nick:"The Great Depression", blurb:"Here is a sampling of the slang heard on the streets, over the radio, and in conversation throughout the 1930s.", terms:[
+    ["All wet","Completely wrong"],["Big house","Prison"],["Bumps","Whispers or rumors"],["Cactus","Dead or finished"],["Cat","A cool person, often a jazz enthusiast"],["Cheesed off","Annoyed or angry"],["Crumb","A despicable person"],["Darb","Something or someone wonderful"],["Dish","An attractive woman"],["G-man","FBI agent"],["Hard-boiled","Tough or unemotional"],["Hooey","Nonsense"],["Moxie","Courage or nerve"],["Patsy","A scapegoat or someone easily duped"],["Ritzy","Elegant or fancy"],["Socko","Impressive or powerful"],["Yegg","A safecracker or burglar"]]},
+  {y:"1940s", nick:"War & Recovery", blurb:"These words and phrases were part of everyday American speech during the 1940s.", terms:[
+    ["A-1","Excellent or first-class"],["Applesauce","Nonsense or flattery"],["Beat feet","To leave quickly"],["Big cheese","An important person"],["Blockbuster","A huge success — originally a large bomb used in the war"],["Bombshell","An extremely attractive woman"],["Bum rap","A false accusation"],["Chicken","Cowardly"],["Cool","Stylish, sophisticated, and composed — from jazz culture"],["Crummy","Bad or of poor quality"],["Ducky","Great or fine"],["Flip your wig","To lose control"],["Gobbledygook","Language that is meaningless or hard to understand"],["Jive","Popular slang or talk related to jazz culture"],["Killer-diller","Excellent or impressive"],["Lush","A habitual consumer of alcohol"],["Pad","A place to live"],["Peepers","Eyes"],["Slick","Smooth or impressive"],["Snap your cap","To lose your temper"]]},
+  {y:"1950s", nick:"Rock 'n' Roll", blurb:"The following terms made up part of the everyday vocabulary of the 1950s.", terms:[
+    ["Ankle-biter","A small child"],["Backseat bingo","Making out in a car",1],["Cruisin' for a bruisin'","Looking for trouble"],["Daddy-O","A term of address, like \"man\" or \"dude\""],["Decked out","Dressed up"],["Dig","To understand or appreciate something"],["Dullsville","A boring or dull place"],["Hip","Cool or stylish"],["Hopped up","Under the influence of drugs",1],["Knuckle sandwich","A punch in the face"],["Made in the shade","Successful or assured of success"],["Necking","Kissing and making out",1],["Pad","Someone's house or apartment"],["Threads","Clothes"]]},
+  {y:"1960s", nick:"Counterculture", blurb:"Here are some of the slang words and expressions people were using throughout the 1960s.", terms:[
+    ["Bogart","To hog something",1],["Bread","Money"],["Far out","Amazing or cool"],["Fuzz","The police"],["Groovy","Cool or fantastic"],["Hang loose","Relax and take it easy"],["Hippie","A person of the counterculture, embracing peace and love"],["Jazzed","Excited or thrilled"],["Lay it on me","Tell me or give me the details"],["Mellow","Relaxed and calm"],["Outta sight","Excellent or impressive"],["Peace out","Goodbye"],["Righteous","Excellent or genuine"],["Split","To leave"],["Trip","A drug-induced experience or a strange situation",1]]},
+  {y:"1970s", nick:"Disco Fever", blurb:"These terms were common in casual conversation across the 1970s.", terms:[
+    ["Boogie","To dance"],["Bummer","A disappointment or bad experience"],["Burnout","Someone who is tired or lacks motivation"],["Catch you on the flip side","See you later"],["Chill","To relax"],["Crash","To sleep or stay somewhere temporarily"],["Decked out","Dressed up or well-dressed"],["Dynamite","Great or awesome — popularized by the show \"Good Times\""],["Foxy","Attractive, usually referring to women"],["Funky","Stylish or cool in an unconventional way"],["Groovy","Cool or fantastic"],["Outta sight","Excellent or impressive"],["Psyched","Excited or enthusiastic"],["Right on","In agreement, or \"exactly\""],["Threads","Clothes"],["Veg out","To relax and do nothing"]]},
+  {y:"1980s", nick:"Totally Rad", blurb:"The following words and phrases were popular in everyday speech during the 1980s.", terms:[
+    ["Airhead","A silly or foolish person"],["Awesome","Excellent or amazing"],["Bad","Good or impressive"],["Bogus","Fake or not cool"],["Bodacious","Excellent, attractive, or remarkable"],["Cowabunga","An exclamation of excitement"],["Dweeb","A socially awkward person"],["Gnarly","Cool or excellent — or sometimes, challenging"],["Like","Used often in speech to emphasize or fill gaps"],["Mallrat","A person who spends a lot of time at the mall"],["Rad","Short for radical — cool or awesome"],["Stoked","Excited or thrilled"],["Take a chill pill","Calm down"],["Totally","Absolutely or completely"]]},
+  {y:"1990s", nick:"All That", blurb:"Here is a collection of slang that people were using throughout the 1990s.", terms:[
+    ["All that and a bag of chips","Excellent; the best"],["As if!","No way, not a chance"],["Bling","Flashy jewelry or accessories"],["Boo-ya","An exclamation of triumph or excitement"],["Da bomb","Excellent or the best"],["Dope","Cool or awesome"],["Fly","Cool or stylish"],["Fresh","New and cool"],["Get jiggy","To dance or get into the groove"],["Homey","A close friend"],["Kickin'","Great or excellent"],["My bad","My mistake or fault"],["No duh","Obviously, no kidding"],["Not!","Used to reverse a previous statement"],["Phat","Excellent or stylish"],["Props","Respect or credit"],["Scrub","A guy who is unsuccessful or undesirable"],["Sike","Just kidding"],["Tight","Excellent or cool"],["Wassup","What's up? What's going on?"]]},
+  {y:"2000s", nick:"Going Online", blurb:"These words and phrases became part of everyday vocabulary during the 2000s.", terms:[
+    ["BFF","Best friend forever"],["Bootylicious","Attractive — popularized by a 2001 Destiny's Child song",1],["Bromance","A close friendship between two men"],["Buff","Muscular or in good physical shape"],["Chillax","\"Chill\" and \"relax\" combined"],["Deets","Details"],["Fanboy / fangirl","An enthusiastic, sometimes obsessive, fan"],["Fo shizzle","For sure — popularized by Snoop Dogg"],["Hella","Very or a lot"],["Holla","To call or shout out to someone"],["Home skillet","A close friend"],["Janky","Of poor quality or unreliable"],["Newbie","A newcomer; someone inexperienced"],["NSFW","Not safe for work"],["Peeps","Friends; people"],["Pwned","Completely defeated — from gaming culture"],["Rents","Parents"],["Salty","Bitter or upset"]]},
+  {y:"2010s", nick:"Meme Culture", blurb:"The following terms were widely used in conversation, both in person and online, during the 2010s.", terms:[
+    ["Adulting","Acting like a responsible adult"],["Bae","Romantic partner; short for \"babe\""],["Boujee","High-class or luxurious — from \"bourgeoisie\""],["Cancel","To reject or boycott someone or something"],["Extra","Over the top or excessive"],["Fleek (on fleek)","Perfectly stylish"],["Ghost","To suddenly cut off all communication"],["High key","Openly or obviously"],["Lit","Fantastic"],["Low key","Subtly or secretly"],["Mood","A relatable feeling or situation"],["Receipts","Proof or evidence"],["Savage","Bold or ruthless"],["Shook","Shocked or scared"],["Slay","To do something exceptionally well"],["Throw shade","To insult or criticize"]]},
+  {y:"2020s", nick:"Gen Z", blurb:"Our timeline ends in the present. These are some of the slang terms in use so far in the 2020s.", terms:[
+    ["Bet","Okay or yes — agreement or confirmation"],["Cap","A lie (\"no cap\" = for real)"],["Cheugy","Out of date or trying too hard"],["Drip","Stylish or fashionable, especially clothing"],["Extra","Over-the-top or excessive behavior"],["Green flag","A good sign in a person — the opposite of a red flag"],["Hits different","Feels unique or especially meaningful"],["No cap","No lie; for real"],["Quarantine and chill","Staying in and relaxing during lockdown"],["Rona","Short for coronavirus / COVID-19"],["Slaps","Excellent or enjoyable, especially music"],["Tea","Gossip or news (\"spill the tea\")"],["Vibe check","Assessing someone's mood or the atmosphere"],["Yeet","An exclamation of excitement — or to throw something hard"]]}
+];
+
+// Find repeated words across decades
+const seen = {};
+DATA.forEach(d => d.terms.forEach(t => { const k=t[0].toLowerCase(); (seen[k] ||= []).push(d.y); }));
+const repeats = Object.entries(seen).filter(([,v]) => v.length>1);
+
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const id = y => "d" + y.slice(0,4);
+
+// Nav + decades
+document.getElementById("nav").innerHTML = DATA.map(d => `<a href="#${id(d.y)}">${d.y}</a>`).join("");
+document.getElementById("decades").innerHTML = DATA.map(d => `
+  <article class="decade" id="${id(d.y)}">
+    <div class="decade-label"><div class="year">${d.y}</div><span class="nick">${d.nick}</span></div>
+    <div class="decade-body">
+      <p class="blurb">${esc(d.blurb)}</p>
+      <div class="terms">${d.terms.map(([w,def,m]) => {
+        const r = seen[w.toLowerCase()].length>1;
+        return `<div class="term${r?' repeat':''}" data-m="${m?1:0}" data-w="${esc(w)}" data-d="${esc(def)}"><b>${esc(w)}</b><span>${esc(def)}</span>${r?`<div class="tag">Also ${seen[w.toLowerCase()].filter(x=>x!==d.y).join(", ")}</div>`:''}</div>`;
+      }).join("")}</div>
+    </div>
+  </article>`).join("");
+
+// Comebacks
+document.getElementById("cb").innerHTML = repeats.map(([k,v]) => {
+  const name = DATA.flatMap(d=>d.terms).find(t=>t[0].toLowerCase()===k)[0];
+  return `<div class="cb"><b>${esc(name)}</b><span>${v.join(" → ")}</span></div>`;
+}).join("");
+
+// Search + classroom filter
+const search = document.getElementById("search"), classroom = document.getElementById("classroom"), countEl = document.getElementById("count");
+function filter(){
+  const q = search.value.trim().toLowerCase(), cm = classroom.checked;
+  let n = 0;
+  document.querySelectorAll(".decade").forEach(dec => {
+    let vis = 0;
+    dec.querySelectorAll(".term").forEach(t => {
+      const w = t.dataset.w, d = t.dataset.d;
+      const match = !q || w.toLowerCase().includes(q) || d.toLowerCase().includes(q);
+      const ok = match && !(cm && t.dataset.m==="1");
+      t.classList.toggle("hidden", !ok);
+      if (ok){ vis++; 
+        const hl = s => q ? esc(s).replace(new RegExp("("+q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig"),"<mark>$1</mark>") : esc(s);
+        t.querySelector("b").innerHTML = hl(w); t.querySelector("span").innerHTML = hl(d);
+      }
+    });
+    dec.classList.toggle("hidden", vis===0);
+    n += vis;
+  });
+  countEl.textContent = `${n} word${n===1?"":"s"}`;
+}
+search.addEventListener("input", filter);
+classroom.addEventListener("change", () => { filter(); newWord(); });
+filter();
+
+// Active nav on scroll
+const links = [...document.querySelectorAll("nav.decades a")];
+const obs = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) links.forEach(a => a.classList.toggle("active", a.getAttribute("href")==="#"+e.target.id));
+}), {rootMargin:"-40% 0px -55% 0px"});
+document.querySelectorAll(".decade").forEach(d => obs.observe(d));
+
+// Guess the decade game
+let score=0, total=0;
+const years = DATA.map(d=>d.y);
+function pool(){
+  return DATA.flatMap(d => d.terms.filter(t => !(classroom.checked && t[2]) && seen[t[0].toLowerCase()].length===1).map(t => ({w:t[0], def:t[1], y:d.y})));
+}
+function newWord(){
+  const p = pool(), item = p[Math.floor(Math.random()*p.length)];
+  const i = years.indexOf(item.y);
+  let opts = new Set([item.y]);
+  // include neighbors for a fair challenge, then random fill
+  [i-1,i+1].forEach(j => { if (years[j]) opts.add(years[j]); });
+  while (opts.size<4) opts.add(years[Math.floor(Math.random()*years.length)]);
+  opts = [...opts].sort();
+  document.getElementById("g-word").textContent = item.w;
+  document.getElementById("g-def").textContent = "“" + item.def + "”";
+  document.getElementById("g-feedback").textContent = "";
+  const box = document.getElementById("g-choices");
+  box.innerHTML = "";
+  opts.forEach(y => {
+    const b = document.createElement("button");
+    b.textContent = y;
+    b.onclick = () => {
+      total++;
+      const right = y===item.y;
+      if (right) score++;
+      box.querySelectorAll("button").forEach(x => { x.disabled = true; if (x.textContent===item.y) x.classList.add("right"); });
+      if (!right) b.classList.add("wrong");
+      const d = DATA.find(x=>x.y===item.y);
+      document.getElementById("g-feedback").textContent = right ? `Yes! ${item.y} — ${d.nick}.` : `Not quite — it's from the ${item.y} (${d.nick}).`;
+      document.getElementById("g-score").textContent = `Score: ${score} / ${total}`;
+    };
+    box.appendChild(b);
+  });
+}
+document.getElementById("g-next").onclick = newWord;
+newWord();
+</script>
+</body>
+</html>
